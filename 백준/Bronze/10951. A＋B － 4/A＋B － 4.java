@@ -1,14 +1,20 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int a = 0;
-        int b = 0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stringTokenizer;
+        String str;
+        int a, b = 0;
 
-        while (scanner.hasNext()) {
-            a = scanner.nextInt();
-            b = scanner.nextInt();
+        while ((str = bufferedReader.readLine()) != null) {
+
+            stringTokenizer = new StringTokenizer(str, " ");
+            a = Integer.parseInt(stringTokenizer.nextToken());
+            b = Integer.parseInt(stringTokenizer.nextToken());
             System.out.println(a + b);
         }
     }
