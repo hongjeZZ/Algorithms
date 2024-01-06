@@ -10,14 +10,12 @@ public class Main {
         String str;
         int a, b = 0;
 
-        while ((str = bufferedReader.readLine()) != null) {
+        while (!(str = bufferedReader.readLine()).equals("0 0")) {
 
             stringTokenizer = new StringTokenizer(str, " ");
             a = Integer.parseInt(stringTokenizer.nextToken());
             b = Integer.parseInt(stringTokenizer.nextToken());
-            if (a + b != 0) {
-                System.out.println(a + b);   
-            }
+            System.out.println(a + b);
         }
     }
 }
