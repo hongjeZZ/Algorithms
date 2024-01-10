@@ -14,7 +14,7 @@ public class Main {
             sb.append("\n");
         }
 
-        for (int j = 1; j <= size; j++) {
+        for (int j = 1; j < size; j++) {
             sb.append(" ".repeat(j));
             sb.append("*".repeat(size - j));
             sb.append("\n");
