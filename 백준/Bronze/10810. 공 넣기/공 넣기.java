@@ -6,8 +6,7 @@ import java.util.StringTokenizer;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str = br.readLine();
-        StringTokenizer st = new StringTokenizer(str, " ");
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         StringBuilder sb = new StringBuilder();
 
         int M = Integer.parseInt(st.nextToken());
@@ -15,8 +14,7 @@ public class Main {
         int[] arr = new int[M];
 
         for (int s = 0; s < N; s++) {
-            str = br.readLine();
-            st = new StringTokenizer(str, " ");
+            st = new StringTokenizer(br.readLine(), " ");
             int i = Integer.parseInt(st.nextToken());
             int j = Integer.parseInt(st.nextToken());
             int k = Integer.parseInt(st.nextToken());
@@ -25,7 +23,7 @@ public class Main {
                 arr[i - 1] = k;
             }
         }
-        
+
         for (int i = 0; i < M; i++) {
             sb.append(arr[i]).append(" ");
         }
