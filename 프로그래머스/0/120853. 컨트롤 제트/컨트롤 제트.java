@@ -1,19 +1,19 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Stack;
 
 class Solution {
     public int solution(String s) {
-        List<String> list = new ArrayList<>(Arrays.asList(s.split(" ")));
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).equals("Z")) {
-                list.set(i, "0");
-                list.set(i - 1, "0");
-            }
-        }
         int answer = 0;
-        for (String string : list) {
-            answer += Integer.parseInt(string);
+        Stack<String> stack = new Stack<>();
+
+        for (String num : s.split(" ")) {
+            if (num.equals("Z")) {
+                stack.pop();
+            }
+            else stack.push(num);
+        }
+
+        for (String num : stack) {
+            answer += Integer.parseInt(num);
         }
         return answer;
     }
