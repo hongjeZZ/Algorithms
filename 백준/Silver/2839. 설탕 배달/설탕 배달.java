@@ -5,23 +5,30 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         int N = Integer.parseInt(br.readLine());
-        int cnt = 0;
 
-        while (N > 0) {
-            // 5로 나누어지면, 몫을 cnt 에 더하여 계산
-            if (N % 5 == 0) {
-                cnt += N / 5;
-                break;
-            }
-            // 그게 아니라면 3으로 나누어 떨어지거나 계산할 수 없는 것
-            cnt++;
-            N -= 3;
-
-            if (N < 0) cnt = -1;
+        // 4,7 이 아니면 모든 경우 봉투에 담을 수 있음
+        if (N == 4 || N == 7) {
+            System.out.println(-1);
         }
 
-        System.out.println(cnt);
+        // 5로 나누어 떨어지는 경우
+        else if (N % 5 == 0) {
+            System.out.println(N / 5);
+        }
+
+        // 6, 8, 11, 13... 의 경우 아래 2가지 경우의 수로 구할 수 있음
+        // 5kg((N / 5) - 1) + 3kg(2) 개
+        // 5kg((N / 5)) + 3kg(1) 개
+        else if (N % 5 == 1 || N % 5 == 3) {
+            System.out.println((N / 5) + 1);
+        }
+
+        // 9, 12, 14, 17... 의 경우 아래 2가지 경우의 수로 구할 수 있음
+        // 5kg((N / 5) - 1) + 3kg(3) 개
+        // 5kg((N / 5) - 2) + 3kg(4) 개
+        else if (N % 5 == 2 || N % 5 == 4) {
+            System.out.println((N / 5) + 2);
+        }
     }
 }
