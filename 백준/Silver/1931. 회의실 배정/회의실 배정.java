@@ -1,51 +1,40 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
-        List<Meeting> meetingList = new ArrayList<>();
+        int[][] meetings = new int[N][2];
 
+        // 회의 정보 입력 받기
         for (int i = 0; i < N; i++) {
-            meetingList.add(new Meeting(br.readLine()));
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            meetings[i][0] = Integer.parseInt(st.nextToken()); // 시작 시간
+            meetings[i][1] = Integer.parseInt(st.nextToken()); // 끝나는 시간
         }
-        meetingList.sort(Comparator.comparingInt(Meeting::getEnd).thenComparingInt(Meeting::getStart));
+
+        // 끝나는 시간 기준으로 오름차순 정렬, 끝나는 시간이 같으면 시작 시간 기준으로 정렬
+        Arrays.sort(meetings, (a, b) -> {
+            if (a[1] == b[1]) return Integer.compare(a[0], b[0]);
+            return Integer.compare(a[1], b[1]);
+        });
 
         int cnt = 0;
         int end = 0;
 
-        for (Meeting meeting : meetingList) {
-            if (meeting.start >= end) {
+        // 회의 선택
+        for (int i = 0; i < N; i++) {
+            if (meetings[i][0] >= end) {
                 cnt++;
-                end = meeting.end;
+                end = meetings[i][1];
             }
         }
 
         System.out.println(cnt);
-    }
-
-    static class Meeting {
-        int start;
-        int end;
-
-        public Meeting(String line) {
-            String[] str = line.split(" ");
-            start = Integer.parseInt(str[0]);
-            end = Integer.parseInt(str[1]);
-        }
-
-        public int getStart() {
-            return start;
-        }
-
-        public int getEnd() {
-            return end;
-        }
     }
 }
