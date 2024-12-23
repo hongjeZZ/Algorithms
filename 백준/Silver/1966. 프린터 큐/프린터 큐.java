@@ -35,24 +35,26 @@ public class Main {
             int printOrder = 0;
 
             while (!queue.isEmpty()) {
-                // 최대값 저장
-                int max = Integer.MIN_VALUE;
+                PrintJob currentJob = queue.poll();
+                boolean hasHigherPriority = true;
+
                 for (PrintJob job : queue) {
-                    if (job.priority > max) {
-                        max = job.priority;
+                    if (job.priority > currentJob.priority) {
+                        hasHigherPriority = false;
+                        break;
                     }
                 }
-                PrintJob printJob = queue.poll();
-                if (printJob.priority == max) {
+
+                if (hasHigherPriority) {
                     printOrder++;
-                    if (printJob.idx == M) {
-                        System.out.println(printOrder);
+                    if (currentJob.idx == M) {
                         break;
                     }
                 } else {
-                    queue.add(printJob);
+                    queue.add(currentJob);
                 }
             }
+            System.out.println(printOrder);
         }
     }
 }
