@@ -7,53 +7,75 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    static int N;
+    static int M;
+    static int[][] map;
+    static int[][] distance;
+    static boolean[][] visited;
+    static Queue<int[]> q = new LinkedList<>();
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        int[][] room = new int[N][M];
-        int[][] distance = new int[N][M];
+        map = new int[N][M];
+        visited = new boolean[N][M];
+        distance = new int[N][M];
         distance[0][0] = 1;
+        q.offer(new int[]{0, 0});
 
         // 미로 저장
         for (int i = 0; i < N; i++) {
-            String[] split = br.readLine().split("");
+            String str = br.readLine();
             for (int j = 0; j < M; j++) {
-                room[i][j] = Integer.parseInt(split[j]);
+                map[i][j] = str.charAt(j) - '0';
             }
         }
 
-        // 상하좌우 배열 생성
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                bfs(0, 0);
+            }
+        }
+    }
 
-        // 위치를 저장할 Queue 선언
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{0, 0});
+    static void bfs(int x, int y) {
+        // 방문했거나, 벽이라면 즉시 종료
+        if (visited[x][y] || map[x][y] == 0) {
+            return;
+        }
+
+        // 방문 처리
+        visited[x][y] = true;
 
         while (!q.isEmpty()) {
             int[] poll = q.poll();
-            int row = poll[0];
-            int col = poll[1];
+            x = poll[0];
+            y = poll[1];
 
-            if (row == N - 1 && col == M - 1) {
-                System.out.println(distance[row][col]);
-                break;
+            if (x == N - 1 && y == M - 1) {
+                System.out.println(distance[x][y]);
+                return;
             }
 
-            // 상하좌우 탐색
             for (int i = 0; i < 4; i++) {
-                int nx = row + dx[i];
-                int ny = col + dy[i];
+                int nx = x + dx[i];
+                int ny = y + dy[i];
 
-                // 방문이 가능할 때
-                if (nx >= 0 && ny >= 0 && nx < N && ny < M && room[nx][ny] == 1) {
-                    room[nx][ny] = 0;
-                    distance[nx][ny] = distance[row][col] + 1;
+                if (nx < 0 || ny < 0 || nx > N - 1 || ny > M - 1) {
+                    continue;
+                }
+
+                if (!visited[nx][ny] && map[x][y] == 1) {
+                    // 방문 처리
                     q.offer(new int[]{nx, ny});
+                    visited[nx][ny] = true;
+                    distance[nx][ny] += distance[x][y] + 1;
                 }
             }
         }
