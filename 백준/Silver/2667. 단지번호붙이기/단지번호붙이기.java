@@ -1,14 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class Main {
 
     static PriorityQueue<Integer> apt = new PriorityQueue<>();
-    static Queue<int[]> q = new LinkedList<>();
     static boolean[][] visited;
     static int N;
     static int[][] map;
@@ -31,7 +28,8 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                bfs(new int[]{i, j});
+                int count = dfs(new int[]{i, j});
+                if (count != 0) apt.add(count);
             }
         }
 
@@ -41,32 +39,25 @@ public class Main {
         }
     }
 
-    static void bfs(int[] idx) {
-        // 집이 아니거나, 이미 체크한 경우 리턴
-        if (map[idx[0]][idx[1]] == 0 || visited[idx[0]][idx[1]]) {
-            return;
+    static int dfs(int[] idx) {
+        int x = idx[0];
+        int y = idx[1];
+
+        if (map[x][y] == 0 || visited[x][y]) {
+            return 0;
         }
-        // 방문 처리
-        q.offer(idx);
+
+        visited[x][y] = true;
         int count = 1;
-        visited[idx[0]][idx[1]] = true;
 
-        while (!q.isEmpty()) {
-            int[] poll = q.poll();
-            int x = poll[0];
-            int y = poll[1];
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
 
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx >= 0 && ny >= 0 && nx < N && ny < N && map[nx][ny] == 1 && !visited[nx][ny]) {
-                    q.offer(new int[]{nx, ny});
-                    visited[nx][ny] = true;
-                    count++;
-                }
+            if (nx >= 0 && ny >= 0 && nx < N && ny < N && map[nx][ny] == 1 && !visited[nx][ny]) {
+                count += dfs(new int[]{nx, ny});
             }
         }
-        apt.add(count);
+        return count;
     }
 }
