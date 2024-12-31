@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 class Solution {
@@ -25,12 +24,19 @@ class Solution {
             cost[0][0][i] = 0; // 모든 방향에서 시작점 비용을 0으로 설정
         }
 
-        return bfs(board);
+        bfs(board);
+
+        int answer = Integer.MAX_VALUE;
+
+        for (int i = 0; i < 4; i++) {
+            answer = Math.min(answer, cost[N - 1][N - 1][i]);
+        }
+
+        return answer;
     }
 
-    public int bfs(int[][] board) {
+    public void bfs(int[][] board) {
         Queue<int[]> q = new LinkedList<>();
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
 
         // 행, 열, 방향, 비용
         q.offer(new int[]{0, 0, -1, 0});
@@ -41,10 +47,6 @@ class Solution {
             int y = poll[1];
             int d = poll[2];
             int nowCost = poll[3];
-
-            if (x == N - 1 && y == N - 1) {
-                pq.add(nowCost);
-            }
 
             for (int i = 0; i < 4; i++) { // 동, 서, 북, 남 방향 탐색
                 int nx = x + dx[i];
@@ -73,19 +75,5 @@ class Solution {
                 }
             }
         }
-        return pq.poll();
-    }
-
-    public static void main(String[] args) {
-        int[][] matrix = {
-                {0, 0, 0, 0, 0},
-                {0, 1, 1, 1, 0},
-                {0, 0, 1, 0, 0},
-                {1, 0, 0, 0, 1},
-                {1, 1, 1, 0, 0}
-        };
-
-        Solution solution = new Solution();
-        System.out.println(solution.solution(matrix));
     }
 }
