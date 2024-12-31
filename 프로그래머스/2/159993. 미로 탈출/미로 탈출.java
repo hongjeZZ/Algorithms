@@ -8,11 +8,9 @@ class Solution {
     int[] start;
     int[] lever;
     int[] exit;
-    boolean[][] visited;
     int[][] distance;
     int[] dx = {0, 0, -1, 1};
     int[] dy = {1, -1, 0, 0};
-    Queue<int[]> q;
 
     public int solution(String[] maps) {
         int answer = 0;
@@ -32,42 +30,34 @@ class Solution {
             }
         }
 
-        q = new LinkedList<>();
-        visited = new boolean[N][M];
-        distance = new int[N][M];
-        distance[start[0]][start[1]] = 0;
-
         // 레버를 당기러 가는 최단 경로 구하기
-        bfs(start, lever, maps);
+        int bfsLever = bfs(start, lever, maps);
 
-        if (!visited[lever[0]][lever[1]]) {
+        if (bfsLever == -1) {
             return -1;
-        } else {
-            answer += distance[lever[0]][lever[1]];
         }
-
-        // 거리 및 방문 정보 초기화
-        q = new LinkedList<>();
-        visited = new boolean[N][M];
-        distance = new int[N][M];
-        distance[lever[0]][lever[1]] = 0;
+        answer += bfsLever;
 
         // 레버를 당긴 위치에서 출입구로 나가는 최단 경로 구하기
-        bfs(lever, exit, maps);
+        int bfsExit = bfs(lever, exit, maps);
 
-        if (!visited[exit[0]][exit[1]]) {
+        if (bfsExit == -1) {
             return -1;
-        } else {
-            answer += distance[exit[0]][exit[1]];
         }
-
+        answer += bfsExit;
         return answer;
     }
 
-    public void bfs(int[] idx, int[] destination, String[] maps) {
+    public int bfs(int[] idx, int[] destination, String[] maps) {
+        // 변수 초기화
+        Queue<int[]> q = new LinkedList<>();
+        boolean[][] visited = new boolean[N][M];
+        distance = new int[N][M];
+        distance[idx[0]][idx[1]] = 0;
+
         // 방문 처리
         visited[idx[0]][idx[1]] = true;
-        q.offer(new int[]{idx[0], idx[1]});
+        q.offer(idx);
 
         // 큐의 요소가 남지 않을 때까지 반복
         while (!q.isEmpty()) {
@@ -76,7 +66,7 @@ class Solution {
             int y = poll[1];
 
             if (x == destination[0] && y == destination[1]) {
-                break;
+                return distance[x][y];
             }
 
             // 상하좌우 탐색
@@ -98,5 +88,6 @@ class Solution {
                 }
             }
         }
+        return -1;
     }
 }
