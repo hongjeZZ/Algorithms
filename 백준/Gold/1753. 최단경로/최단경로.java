@@ -62,24 +62,29 @@ public class Main {
 
         while (!pq.isEmpty()) {
             // 새로운 노드를 꺼냄
-            Node poll = pq.poll();
-            int idx = poll.idx;
-            int cost = poll.cost;
+            Node node = pq.poll();
+            int idx = node.idx;
+            int cost = node.cost;  // 현재 idx 노드까지의 비용
 
             // 이미 방문한 노드라면 즉시 종료
+            // 현재 idx 노드까지의 비용이
+            // idx 노드까지의 최소 비용보다 크다면 "이미 방문한 노드임"
+            // 왜냐면 distance[] 배열은 Integer.MAX_VALUE 로 초기화되었기 때문에
+            // 최소 비용 or Max 가 들어가게됨
+            // cost > distance[idx] 라는 의미는 현재 node 가 우선순위에 밀려 나온 값이라는 것
             if (cost > distance[idx]) {
                 continue;
             }
 
             // 인접한 노드의 거리 계산
-            for (int i = 0; i < list.get(idx).size(); i++) {
+            for (Node next : list.get(idx)) {
                 // 새로운 비용
-                int newCost = cost + list.get(idx).get(i).cost;
+                int newCost = cost + next.cost;
 
                 // 새로운 비용이 더 저렴하다면 교체 및 우선순위 큐에 담기
-                if (newCost < distance[list.get(idx).get(i).idx]) {
-                    distance[list.get(idx).get(i).idx] = newCost;
-                    pq.offer(new Node(list.get(idx).get(i).idx, newCost));
+                if (newCost < distance[next.idx]) {
+                    distance[next.idx] = newCost;
+                    pq.offer(new Node(next.idx, newCost));
                 }
             }
         }
