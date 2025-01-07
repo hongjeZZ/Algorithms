@@ -44,15 +44,15 @@ public class Main {
 
         // map 저장
         for (int i = 0; i < N; i++) {
-            String[] strings = br.readLine().split("");
+            String line = br.readLine();
             for (int j = 0; j < M; j++) {
-                map[i][j] = Integer.parseInt(strings[j]);
+                map[i][j] = line.charAt(j) - '0';
             }
         }
 
         Queue<Node> q = new LinkedList<>();
-        q.offer(new Node(0, 0, 0, 0));
-        distance[0][0][0] = 0;
+        q.offer(new Node(0, 0, 1, 0));
+        distance[0][0][0] = 1;
 
         while (!q.isEmpty()) {
             Node node = q.poll();
@@ -87,7 +87,7 @@ public class Main {
         if (distance[N - 1][M - 1][0] == Integer.MAX_VALUE && distance[N - 1][M - 1][1] == Integer.MAX_VALUE) {
             System.out.println(-1);
         } else {
-            System.out.println(Math.min(distance[N - 1][M - 1][0], distance[N - 1][M - 1][1]) + 1);
+            System.out.println(Math.min(distance[N - 1][M - 1][0], distance[N - 1][M - 1][1]));
         }
     }
 }
