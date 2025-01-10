@@ -1,30 +1,30 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Matcher matcher;
         String input = br.readLine();
+        
+        int one = 0;
+        int zero = 0;
+        char prev = '\0';
 
-        Pattern zeroPattern = Pattern.compile("0+");
-        Pattern onePattern = Pattern.compile("1+");
-
-        matcher = zeroPattern.matcher(input);
-        int zeroCount = 0;
-        while (matcher.find()) {
-            zeroCount++;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '0') {
+                if (prev != '0') {
+                    zero++;
+                }
+            }
+            if (input.charAt(i) == '1') {
+                if (prev != '1') {
+                    one++;
+                }
+            }
+            prev = input.charAt(i);
         }
 
-        matcher = onePattern.matcher(input);
-        int oneCount = 0;
-        while (matcher.find()) {
-            oneCount++;
-        }
-
-        System.out.print(Math.min(zeroCount, oneCount));
+        System.out.println(Math.min(one, zero));
     }
 }
