@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        
         int T = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < T; i++) {
@@ -17,21 +19,14 @@ public class Main {
 
                 if (c == 'O') {
                     cnt++;
+                    answer += cnt;
                 } else {
-                    if (cnt != 0) {
-                        while (cnt != 0) {
-                            answer += cnt;
-                            cnt--;
-                        }
-                    }
+                    cnt = 0;
                 }
             }
-            while (cnt != 0) {
-                answer += cnt;
-                cnt--;
-            }
 
-            System.out.println(answer);
+            sb.append(answer).append("\n");
         }
+        System.out.println(sb);
     }
 }
