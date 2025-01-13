@@ -1,32 +1,29 @@
 class Solution {
     public int solution(String s) {
-        // 최대 문자열의 길이
         int answer = s.length();
-        int cnt = 1;
 
-        // 1 ~ (문자열의 길이 / 2) 까지 모든 경우 비교
         for (int i = 1; i < s.length() / 2 + 1; i++) {
-            StringBuilder sb = new StringBuilder();
+            int cnt = 1;
+            String compressed = "";
             String target = s.substring(0, i);
 
-            for (int j = i; j < s.length() + 1; j += i) {
-                int end = Math.min(s.length(), j + i);
+            for (int j = i; j <= s.length(); j = j + i) {
+                int end = Math.min(s.length(), i + j);
                 String compare = s.substring(j, end);
-
-                if (target.equals(compare)) {
+                
+                if (compare.equals(target)) {
                     cnt++;
                 } else {
-                    if (cnt >= 2) {
-                        sb.append(cnt);
+                    if (cnt > 1) {
+                        compressed += cnt;
+                        cnt = 1;
                     }
-                    sb.append(target);
+                    compressed += target;
                     target = compare;
-                    cnt = 1;
                 }
             }
-            // 남은 문자열 추가
-            sb.append(target);
-            answer = Math.min(answer, sb.length());
+            compressed += target;
+            answer = Math.min(answer, compressed.length());
         }
 
         return answer;
