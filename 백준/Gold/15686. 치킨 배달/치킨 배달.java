@@ -7,16 +7,18 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static List<Block> houseList;
-    static List<Block> chickenList;
-    static int N, M;
-    static int minDistance = Integer.MAX_VALUE;
+    static int N;
+    static int M;
+    static int minValue = Integer.MAX_VALUE;
 
-    public static class Block {
+    static ArrayList<Pos> chickens = new ArrayList<>();
+    static ArrayList<Pos> houses = new ArrayList<>();
+
+    static class Pos {
         int x;
         int y;
 
-        public Block(int x, int y) {
+        public Pos(int x, int y) {
             this.x = x;
             this.y = y;
         }
@@ -29,53 +31,49 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        houseList = new ArrayList<>();
-        chickenList = new ArrayList<>();
-
+        // 지도 저장
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
-                int value = Integer.parseInt(st.nextToken());
-                if (value == 1) {
-                    houseList.add(new Block(i, j));
-                } else if (value == 2) {
-                    chickenList.add(new Block(i, j));
+                int input = Integer.parseInt(st.nextToken());
+                if (input == 1) {
+                    houses.add(new Pos(i, j));
+                } else if (input == 2) {
+                    chickens.add(new Pos(i, j));
                 }
             }
         }
-
-        // 치킨집 선택 조합 탐색
         combination(new ArrayList<>(), 0, 0);
-
-        System.out.println(minDistance);
+        System.out.println(minValue);
     }
 
-    // 조합 계산
-    private static void combination(List<Block> selected, int start, int depth) {
+    public static void combination(List<Pos> selected, int start, int depth) {
+        // 조합을 완성했다면, 최소 치킨 거리 저장
         if (depth == M) {
-            // 선택된 치킨집으로 최소 거리 계산
-            minDistance = Math.min(minDistance, calculateDistance(selected));
+            minValue = Math.min(minValue, getChickenWay(selected));
             return;
         }
 
-        for (int i = start; i < chickenList.size(); i++) {
-            selected.add(chickenList.get(i));
+        // Back-Tracking 으로 조합을 구현한다.
+        for (int i = start; i < chickens.size(); i++) {
+            selected.add(chickens.get(i));
             combination(selected, i + 1, depth + 1);
             selected.remove(selected.size() - 1);
         }
     }
 
-    // 최소 치킨 거리 계산
-    private static int calculateDistance(List<Block> selected) {
-        int totalDistance = 0;
+    // 집을 순회하며 치킨 거리의 최소합을 찾는다.
+    public static int getChickenWay(List<Pos> selected) {
+        int answer = 0;
 
-        for (Block house : houseList) {
-            int distance = Integer.MAX_VALUE;
-            for (Block chicken : selected) {
-                distance = Math.min(distance, Math.abs(house.x - chicken.x) + Math.abs(house.y - chicken.y));
+        for (Pos house : houses) {
+            int min = Integer.MAX_VALUE;
+
+            for (Pos pos : selected) {
+                min = Math.min(min, Math.abs(pos.x - house.x) + Math.abs(pos.y - house.y));
             }
-            totalDistance += distance;
+            answer += min;
         }
-        return totalDistance;
+        return answer;
     }
 }
