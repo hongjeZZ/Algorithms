@@ -80,11 +80,16 @@ public class Main {
                     int nx = x + dx[j];
                     int ny = y + dy[j];
 
-                    if (nx >= N || ny >= N || nx < 0 || ny < 0 || lab[nx][ny] != 0) {
+                    if (nx >= N || ny >= N || nx < 0 || ny < 0) {
                         continue;
                     }
-                    q.offer(new Virus(nx, ny, number));
-                    lab[nx][ny] = number;
+
+                    if (lab[nx][ny] == 0) {
+                        q.offer(new Virus(nx, ny, number));
+                        lab[nx][ny] = number;
+
+                        if (nx == X && ny == Y) return;
+                    }
                 }
             }
             if (!q.isEmpty()) {
