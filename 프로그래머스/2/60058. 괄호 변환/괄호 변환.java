@@ -13,38 +13,26 @@ class Solution {
         if (checkRight(u)) {
             return u + solution(v);
         } else {
-            String temp = "(" + solution(v) + ")";
-            u = u.substring(1, u.length() - 1);
-            return temp + reverse(u);
+            return  "(" + solution(v) + ")" + reverse(u.substring(1, u.length() - 1));
         }
     }
 
     // 두 균형잡힌 문자열로 반환
     public String[] split(String str) {
-        String temp = "";
-
-        for (int i = 0; i < str.length(); i = i + 2) {
-            temp += str.substring(i, i + 2);
-
-            if (checkBalance(temp)) {
-                return new String[] { temp, str.substring(i + 2)};
-            }
-        }
-        return null;
-    }
-
-    // 균형잡힌 문자열인지 확인
-    public boolean checkBalance(String str) {
-        int cnt = 0;
+        int balance = 0;
 
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '(') {
-                cnt++;
+                balance++;
             } else {
-                cnt--;
+                balance--;
+            }
+
+            if (balance == 0) {
+                return new String[] { str.substring(0, i + 1), str.substring(i + 1) };
             }
         }
-        return cnt == 0;
+        return new String[] { str, "" };
     }
 
     // 올바른 괄호 문자열인지 확인
@@ -65,16 +53,16 @@ class Solution {
         }
         return stack.isEmpty();
     }
-    
-    public String reverse(String str) {
-        String temp = "";
 
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '(') {
-                temp += ')';
-            } else temp += '(';
+    public String reverse(String str) {
+        StringBuilder reversed = new StringBuilder();
+        for (char c : str.toCharArray()) {
+            if (c == '(') {
+                reversed.append(')');
+            } else {
+                reversed.append('(');
+            }
         }
-        
-        return temp;
+        return reversed.toString();
     }
 }
