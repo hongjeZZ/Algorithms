@@ -7,6 +7,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
         int N = Integer.parseInt(br.readLine());
         List<String> list = new ArrayList<>();
 
@@ -27,7 +29,8 @@ public class Main {
         });
 
         for (String val : list) {
-            System.out.println(val);
+            sb.append(val).append("\n");
         }
+        System.out.println(sb);
     }
 }
