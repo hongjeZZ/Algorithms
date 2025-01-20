@@ -13,7 +13,6 @@ public class Main {
     static int L;
     static int R;
     static int[][] arr;
-    static boolean[][] visited;
 
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, 1, -1};
@@ -36,32 +35,32 @@ public class Main {
 
         int cnt = 0;
         while (true) {
-            visited = new boolean[N][N];
             boolean isMoved = false;
+            boolean[][] visited = new boolean[N][N];
 
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     if (!visited[i][j]) {
-                        if (bfs(i, j)) isMoved = true;
+                        if (bfs(i, j, visited)) isMoved = true;
                     }
                 }
             }
 
-            if (isMoved) {
-                cnt++;
-            } else {
+            if (!isMoved) {
                 break;
             }
+            cnt++;
         }
         System.out.println(cnt);
     }
 
-    public static boolean bfs(int i, int j) {
+    public static boolean bfs(int i, int j, boolean[][] visited) {
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[]{i, j});
         visited[i][j] = true;
 
         int sum = arr[i][j];
+        int count = 1;
         List<int[]> list = new ArrayList<>();
         list.add(new int[]{i, j});
 
@@ -74,33 +73,29 @@ public class Main {
                 int nx = x + dx[k];
                 int ny = y + dy[k];
 
-                // 방문 범위를 벗어난다면 종료
-                if (nx < 0 || ny < 0 || nx > N - 1 || ny > N - 1) {
+                if (nx < 0 || ny < 0 || nx >= N || ny >= N || visited[nx][ny]) {
                     continue;
                 }
 
                 int value = Math.abs(arr[x][y] - arr[nx][ny]);
-                if (value >= L && value <= R && !visited[nx][ny]) {
+                if (value >= L && value <= R) {
                     visited[nx][ny] = true;
                     q.offer(new int[]{nx, ny});
                     list.add(new int[]{nx, ny});
                     sum += arr[nx][ny];
+                    count++;
                 }
             }
         }
 
-        // 자기 자신밖에 없을 때
-        if (list.size() == 1) {
-            return false;
+        if (count == 1) {
+            return false; // 이동이 없음
         } else {
-            int average = sum / list.size();
-
-            for (int[] pos: list) {
-                int x = pos[0];
-                int y = pos[1];
-                arr[x][y] = average;
+            int average = sum / count;
+            for (int[] pos : list) {
+                arr[pos[0]][pos[1]] = average;
             }
-            return true;
+            return true; // 이동이 있음
         }
     }
 }
