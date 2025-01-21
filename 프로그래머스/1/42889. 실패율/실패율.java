@@ -1,29 +1,50 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 class Solution {
+
+    static class Fail implements Comparable<Fail> {
+        int level;
+        double per;
+
+        public Fail(int level, double per) {
+            this.level = level;
+            this.per = per;
+        }
+
+        @Override
+        public int compareTo(Fail o) {
+            if (per == o.per) {
+                return Integer.compare(level, o.level);
+            } else {
+                return Double.compare(o.per, per);
+            }
+        }
+    }
+    
     public int[] solution(int N, int[] stages) {
-        int[] users = new int[N + 2];
+        Fail[] fail = new Fail[N];
 
-        for (int stage : stages) {
-            users[stage]++;
+        for (int i = 0; i < N; i++) {
+            int tryCnt = 0;
+            int clearCnt = 0;
+
+            for (int j = 0; j < stages.length; j++) {
+                int userStage = stages[j];
+
+                if (userStage >= i + 1) tryCnt++;
+                if (userStage > i + 1) clearCnt++;
+            }
+            if (tryCnt == 0) {
+                fail[i] = new Fail(i + 1, 0);
+                continue;
+            }
+
+            int failCnt = tryCnt - clearCnt;
+            fail[i] = new Fail(i + 1, (double) failCnt / tryCnt);
         }
 
-        Map<Integer, Double> map = new HashMap<>();
-        double numOfUser = stages.length;
+        Arrays.sort(fail);
 
-        for (int i = 1; i <= N; i++) {
-            if (users[i] == 0) {
-                map.put(i, 0.);
-            }
-            else {
-                map.put(i, users[i] / numOfUser);
-                numOfUser -= users[i];
-            }
-        }
-        
-        return map.entrySet().stream()
-                .sorted((o1, o2) -> Double.compare(o2.getValue(), o1.getValue()))
-                .mapToInt(Map.Entry::getKey).toArray();
+        return Arrays.stream(fail).mapToInt(f -> f.level).toArray();
     }
 }
