@@ -11,31 +11,27 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        Map<String, Integer> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
 
         // 듣도 못한 사람 저장
         for (int i = 0; i < N; i++) {
-            String line = br.readLine();
-            map.put(line, map.getOrDefault(line,  0) + 1);
+            set.add(br.readLine());
         }
 
-        List<String> list = new ArrayList<>();
+        Set<String> treeSet = new TreeSet<>();
 
         for (int i = 0; i < M; i++) {
             String line = br.readLine();
-            Integer value = map.getOrDefault(line, 0);
 
-            if (value != 0) {
-                list.add(line);
+            if (set.contains(line)) {
+                treeSet.add(line);
             }
         }
 
-        sb.append(list.size()).append("\n");
+        sb.append(treeSet.size()).append("\n");
 
-        list.sort(String::compareTo);
-
-        for (String line : list) {
-            sb.append(line).append("\n");
+        for (String value : treeSet) {
+            sb.append(value).append("\n");
         }
         System.out.println(sb);
     }
