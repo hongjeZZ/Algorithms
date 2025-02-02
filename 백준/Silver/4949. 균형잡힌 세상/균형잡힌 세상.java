@@ -28,25 +28,12 @@ public class Main {
         Stack<Character> stack = new Stack<>();
 
         for (char c : line.toCharArray()) {
-            // 여는 괄호일 경우
-            if (c == '(' || c =='[') {
+            if (c == '(' || c == '[') {
                 stack.push(c);
             } else if (c == ')') {
-                if (stack.isEmpty() || stack.peek() == '[') {
-                    return false;
-                } else if (stack.peek() == '(') {
-                    stack.pop();
-                } else {
-                    stack.push(c);
-                }
+                if (stack.isEmpty() || stack.pop() != '(') return false;
             } else if (c == ']') {
-                if (stack.isEmpty() || stack.peek() == '(') {
-                    return false;
-                } else if (stack.peek() == '[') {
-                    stack.pop();
-                } else {
-                    stack.push(c);
-                }
+                if (stack.isEmpty() || stack.pop() != '[') return false;
             }
         }
         return stack.isEmpty();
