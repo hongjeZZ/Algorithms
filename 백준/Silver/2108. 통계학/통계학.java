@@ -8,26 +8,25 @@ public class Main {
         int[] arr = new int[N];
 
         int sum = 0;
-        Map<Integer, Integer> freqMap = new HashMap<>();
+        int[] counting = new int[8000 + 1];
         int maxFreq = 0;
 
         for (int i = 0; i < N; i++) {
             int value = Integer.parseInt(br.readLine());
             sum += value;
             arr[i] = value;
-            freqMap.put(value, freqMap.getOrDefault(value, 0) + 1);
-            maxFreq = Math.max(maxFreq, freqMap.get(value));
+            counting[arr[i] + 4000]++;
+            maxFreq = Math.max(maxFreq, counting[arr[i] + 4000]);
         }
 
         Arrays.sort(arr);
 
         List<Integer> modes = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
-            if (entry.getValue() == maxFreq) {
-                modes.add(entry.getKey());
+        for (int i = 0; i < counting.length; i++) {
+            if (counting[i] == maxFreq) {
+                modes.add(i - 4000);
             }
         }
-        Collections.sort(modes);
         int mode = (modes.size() > 1) ? modes.get(1) : modes.get(0);
 
         System.out.println(Math.round(sum / (double) N)); // 평균 (반올림)
