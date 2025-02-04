@@ -8,18 +8,17 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
         int[] arr = new int[N];
+        int[] clone = new int[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            arr[i] = clone[i] = Integer.parseInt(st.nextToken());
         }
-
-        int[] clone = arr.clone();
         Arrays.sort(clone);
 
         HashMap<Integer, Integer> map = new HashMap<>();
         int rank = 0;
-        
+
         for (int i = 0; i < N; i++) {
             if (!map.containsKey(clone[i])) {
                 map.put(clone[i], rank);
