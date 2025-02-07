@@ -8,32 +8,21 @@ public class Main {
         int b = sc.nextInt();
 
         System.out.println(getGCD(a, b));
-        System.out.println(getLCM(a, b));
+        System.out.println(getLCM(a, b, getGCD(a, b)));
     }
 
     // 최대 공약수
     public static int getGCD(int a, int b) {
-        int value = Math.min(a, b);
-
-        while (true) {
-            if (a % value == 0 && b % value == 0) {
-                break;
-            }
-            value--;
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
         }
-        return value;
+        return a;
     }
 
     // 최소 공배수
-    public static int getLCM(int a, int b) {
-        int value = Math.max(a, b);
-
-        while (true) {
-            if (value % a == 0 && value % b == 0) {
-                break;
-            }
-            value++;
-        }
-        return value;
+    public static int getLCM(int a, int b, int gcd) {
+        return (a / gcd) * b;
     }
 }
