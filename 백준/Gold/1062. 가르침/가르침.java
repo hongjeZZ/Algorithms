@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -11,6 +9,7 @@ public class Main {
     static int N;
     static int K;
     static String[] line;
+    static boolean[] visited = new boolean[26];
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,25 +28,24 @@ public class Main {
             line[i] = br.readLine();
         }
 
-        ArrayList<Integer> selected = new ArrayList<>();
-        selected.add(1);
-        selected.add('n' - 'a' + 1);
-        selected.add('t' - 'a' + 1);
-        selected.add('i' - 'a' + 1);
-        selected.add('c' - 'a' + 1);
+        visited['a' - 'a'] = true;
+        visited['n' - 'a'] = true;
+        visited['t' - 'a'] = true;
+        visited['i' - 'a'] = true;
+        visited['c' - 'a'] = true;
 
-        combination(selected, 1, 5);
+        combination(1, 5);
         System.out.println(max);
     }
 
-    public static void combination(List<Integer> selected, int start, int depth) {
+    public static void combination(int start, int depth) {
         if (depth == K) {
             int cnt = 0;
             for (String word : line) {
                 boolean flag = true;
 
                 for (char c : word.toCharArray()) {
-                    if (!selected.contains(c - 'a' + 1)) {
+                    if (!visited[c - 'a']) {
                         flag = false;
                         break;
                     }
@@ -60,11 +58,11 @@ public class Main {
         }
 
         // 모든 알파벳 조합
-        for (int i = start; i < 27; i++) {
-            if (!selected.contains(i)) {
-                selected.add(i);
-                combination(selected, i + 1, depth + 1);
-                selected.remove(selected.size() - 1); // 백트래킹
+        for (int i = start; i < 26; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                combination(i + 1, depth + 1);
+                visited[i] = false;
             }
         }
     }
