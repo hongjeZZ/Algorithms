@@ -22,12 +22,11 @@ public class Main {
 
         while (right < N) {
             sum += arr[right++];
-            if (sum == M) cnt++;
 
             while (sum > M) {
                 sum -= arr[left++];
-                if (sum == M) cnt++;
             }
+            if (sum == M) cnt++;
         }
         System.out.println(cnt);
     }
