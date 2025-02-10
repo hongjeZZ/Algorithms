@@ -17,14 +17,9 @@ class Solution {
                 if (value == target) cnt++;
                 continue;
             }
-
-            for (int i = 0; i < 2; i++) {
-                if (i == 0) {
-                    q.offer(new int[]{value + numbers[idx + 1], idx + 1});
-                } else {
-                    q.offer(new int[]{value - numbers[idx + 1], idx + 1});
-                }
-            }
+            int nextIdx = idx + 1;
+            q.offer(new int[]{value + numbers[nextIdx], nextIdx});
+            q.offer(new int[]{value - numbers[nextIdx], nextIdx});
         }
 
         return cnt;
