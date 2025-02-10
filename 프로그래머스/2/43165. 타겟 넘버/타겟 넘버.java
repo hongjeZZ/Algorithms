@@ -1,27 +1,21 @@
-import java.util.LinkedList;
-import java.util.Queue;
-
 class Solution {
+
+    int[] numbers;
+    int target;
+
     public int solution(int[] numbers, int target) {
-        int cnt = 0;
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{numbers[0], 0});
-        q.offer(new int[]{-numbers[0], 0});
+        this.numbers = numbers;
+        this.target = target;
 
-        while (!q.isEmpty()) {
-            int[] poll = q.poll();
-            int value = poll[0];
-            int idx = poll[1];
+        return dfs(0, 0);
+    }
 
-            if (idx == numbers.length - 1) {
-                if (value == target) cnt++;
-                continue;
-            }
-            int nextIdx = idx + 1;
-            q.offer(new int[]{value + numbers[nextIdx], nextIdx});
-            q.offer(new int[]{value - numbers[nextIdx], nextIdx});
+    public int dfs(int value, int idx) {
+        if (idx == numbers.length) {
+            if (value == target) return 1;
+            return 0;
         }
 
-        return cnt;
+        return dfs(value + numbers[idx], idx + 1) + dfs(value - numbers[idx], idx + 1);
     }
 }
