@@ -4,6 +4,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken()); // 수빈이 위치
@@ -41,8 +42,8 @@ public class Main {
             }
         }
 
-        // 최단 시간 출력
-        System.out.println(dp[M]);
+        // 최단 시간
+        sb.append(dp[M]).append("\n");
 
         // 경로 추적
         List<Integer> path = new ArrayList<>();
@@ -52,7 +53,8 @@ public class Main {
         Collections.reverse(path);
 
         for (int pos : path) {
-            System.out.print(pos + " ");
+            sb.append(pos).append(" ");
         }
+        System.out.println(sb);
     }
 }
