@@ -3,20 +3,16 @@ import java.util.*;
 class Solution {
     public int solution(int[] elements) {
         HashSet<Integer> set = new HashSet<>();
-        
-        int[] arr = new int[elements.length * 2];
-        
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = elements[i % elements.length];
+        int n = elements.length;
+        int[] prefixSum = new int[n * 2 + 1];
+
+        for (int i = 1; i <= n * 2; i++) {
+            prefixSum[i] = prefixSum[i - 1] + elements[(i - 1) % n];
         }
-        
-        // 길이가 i인 부분 수열 탐색
-        for (int i = 1; i <= elements.length; i++) {
-            for (int j = 0; j < elements.length; j++) {
-                int sum = 0;
-                for (int k = j; k < j + i; k++) {
-                    sum += arr[k];
-                }
+
+        for (int len = 1; len <= n; len++) {
+            for (int start = 0; start < n; start++) {
+                int sum = prefixSum[start + len] - prefixSum[start];
                 set.add(sum);
             }
         }
