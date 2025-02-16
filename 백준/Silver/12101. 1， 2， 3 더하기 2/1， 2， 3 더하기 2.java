@@ -45,6 +45,10 @@ public class Main {
             }
             return;
         }
+        
+        if (cnt > K) {
+            return;
+        }
 
         for (int i = 1; i <= 3; i++) {
             if (sum + i <= N) {
