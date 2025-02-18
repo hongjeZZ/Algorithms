@@ -2,24 +2,23 @@ import java.util.*;
 
 class Solution {
     public int solution(int m, int n, int[][] puddles) {
-        boolean[][] puddleMap = new boolean[n][m];
-        for (int[] puddle : puddles) {
-            puddleMap[puddle[1] - 1][puddle[0] - 1] = true;
+        int mod = 1_000_000_007;
+        int[][] board = new int[n + 1][m + 1];
+        boolean[][] visited = new boolean[n + 1][m + 1];
+
+        for (int i = 0; i < puddles.length; i++) {
+            visited[puddles[i][1]][puddles[i][0]] = true;
         }
-        
-        int[] dp = new int[m];
-        dp[0] = 1; // 시작점 초기화
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (puddleMap[i][j]) {
-                    dp[j] = 0;
-                } else if (j > 0) {
-                    dp[j] = (dp[j] + dp[j - 1]) % 1_000_000_007;
+
+        board[1][1] = 1;
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+                if (visited[i][j]) {
+                    continue;
                 }
+                board[i][j] += (board[i - 1][j] + board[i][j - 1]) % mod;
             }
         }
-        
-        return dp[m - 1];
+        return board[n][m];
     }
 }
