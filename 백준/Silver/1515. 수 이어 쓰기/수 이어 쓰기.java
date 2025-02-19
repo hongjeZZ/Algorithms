@@ -9,8 +9,7 @@ public class Main {
         int idx = 0;
         int value = 0;
 
-        while (true) {
-            value++;
+        while (value++ <= 30000) {
             String valueStr = String.valueOf(value);
             for (int i = 0; i < valueStr.length(); i++) {
                 if (valueStr.charAt(i) == s.charAt(idx)) {
