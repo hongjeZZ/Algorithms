@@ -1,37 +1,42 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static List<List<Integer>> graph = new ArrayList<>();
+    static List<Integer>[] graph;
     static boolean[] visited;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int start = Integer.parseInt(st.nextToken());
+        int target = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(br.readLine());
 
-        int n = sc.nextInt();
-        int start = sc.nextInt();
-        int target = sc.nextInt();
-        int m = sc.nextInt();
-
+        graph = new ArrayList[n + 1];
         visited = new boolean[n + 1];
 
         for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
+            graph[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < m; i++) {
-            int parent = sc.nextInt();
-            int child = sc.nextInt();
-            graph.get(parent).add(child);
-            graph.get(child).add(parent);
+            st = new StringTokenizer(br.readLine());
+            int parent = Integer.parseInt(st.nextToken());
+            int child = Integer.parseInt(st.nextToken());
+            
+            graph[parent].add(child);
+            graph[child].add(parent);
         }
 
-        int result = bfs(start, target, n);
+        int result = bfs(start, target);
         System.out.println(result);
-
-        sc.close();
     }
 
-    static int bfs(int start, int target, int n) {
+    static int bfs(int start, int target) {
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{start, 0});
         visited[start] = true;
@@ -45,7 +50,7 @@ public class Main {
                 return depth;
             }
 
-            for (int next : graph.get(node)) {
+            for (int next : graph[node]) {
                 if (!visited[next]) {
                     visited[next] = true;
                     queue.add(new int[]{next, depth + 1});
