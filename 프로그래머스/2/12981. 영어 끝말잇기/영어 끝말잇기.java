@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int n, String[] words) {
-        List<String> usedWords = new ArrayList<>();
+        Set<String> usedWords = new HashSet<>();
         usedWords.add(words[0]);
 
         for (int i = 1; i < words.length; i++) {
