@@ -13,7 +13,7 @@ public class Main {
             names[i] = br.readLine();
         }
 
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
 
         for (int i = 0; i < names[0].length(); i++) {
             char c = names[0].charAt(i);
@@ -26,7 +26,7 @@ public class Main {
                 }
             }
 
-            answer += flag ? c : '?';
+            answer.append(flag ? c : '?');
         }
 
         System.out.println(answer);
