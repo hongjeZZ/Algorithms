@@ -3,25 +3,18 @@ class Solution {
         int answer = 0;
         
         for (int i = left; i <= right; i++) {
-            int cnt = getCnt(i);
-            
-            if (cnt % 2 == 0) {
-                answer += i;
-            } else {
+            if (isSquare(i)) {
                 answer -= i;
+            } else {
+                answer += i;
             }
         }
         
         return answer;
     }
     
-    public int getCnt(int value) {
-        int cnt = 0;
-        
-        for (int i = 1; i <= value; i++) {
-            if (value % i == 0) cnt++;
-        }
-        
-        return cnt;
+    private boolean isSquare(int num) {
+        int sqrt = (int) Math.sqrt(num);
+        return sqrt * sqrt == num;
     }
 }
