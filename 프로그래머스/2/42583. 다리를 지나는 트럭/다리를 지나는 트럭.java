@@ -15,14 +15,14 @@ class Solution {
             time++;
 
             // 다리에서 나갈 트럭 확인
-            if (!bridge.isEmpty() && bridge.peek()[1] + bridge_length == time) {
+            if (!bridge.isEmpty() && bridge.peek()[1] == time) {
                 currentWeight -= bridge.poll()[0];
             }
             
             // 트럭 추가
             if (idx < truck_weights.length) {
                 if (truck_weights[idx] + currentWeight <= weight && bridge.size() < bridge_length) {
-                    bridge.add(new int[]{truck_weights[idx], time});
+                    bridge.add(new int[]{truck_weights[idx], time + bridge_length});
                     currentWeight += truck_weights[idx];
                     idx++;
                 }
