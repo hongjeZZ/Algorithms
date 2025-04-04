@@ -1,93 +1,79 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
-
-    int N;
-    int M;
-    int[] start;
-    int[] lever;
-    int[] exit;
-    int[][] distance;
-    int[] dx = {0, 0, -1, 1};
-    int[] dy = {1, -1, 0, 0};
-
+    
+    static final char START = 'S';
+    static final char LEVER = 'L';
+    static final char END = 'E';
+    static final char WAY = 'O';
+    static final char BLOCK = 'X';
+    
+    static final int[] dx = { -1, 1, 0, 0 };
+    static final int[] dy = { 0, 0, -1, 1 };
+    
+    int x; // 가로
+    int y; // 세로
+    
     public int solution(String[] maps) {
-        int answer = 0;
-        N = maps.length;
-        M = maps[0].length();
-
-        // 위치 정보 저장
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (maps[i].charAt(j) == 'S') {
-                    start = new int[]{i, j};
-                } else if (maps[i].charAt(j) == 'E') {
-                    exit = new int[]{i, j};
-                } else if (maps[i].charAt(j) == 'L') {
-                    lever = new int[]{i, j};
+        this.y = maps.length;         // 행 수 (세로)
+        this.x = maps[0].length();    // 열 수 (가로)
+        
+        int[] start = new int[2];
+        int[] lever = new int[2];
+        int[] end = new int[2];
+        
+        for (int i = 0; i < y; i++) {         // i: row
+            for (int j = 0; j < x; j++) {     // j: column
+                char c = maps[i].charAt(j);
+                if (c == START) {
+                    start[0] = i; start[1] = j;
+                } else if (c == LEVER) {
+                    lever[0] = i; lever[1] = j;
+                } else if (c == END) {
+                    end[0] = i; end[1] = j;
                 }
             }
         }
-
-        // 레버를 당기러 가는 최단 경로 구하기
-        int bfsLever = bfs(start, lever, maps);
-
-        if (bfsLever == -1) {
-            return -1;
-        }
-        answer += bfsLever;
-
-        // 레버를 당긴 위치에서 출입구로 나가는 최단 경로 구하기
-        int bfsExit = bfs(lever, exit, maps);
-
-        if (bfsExit == -1) {
-            return -1;
-        }
-        answer += bfsExit;
-        return answer;
+        
+        int leverCnt = bfs(maps, start, lever);
+        if (leverCnt == -1) return -1;
+        
+        int endCnt = bfs(maps, lever, end);
+        if (endCnt == -1) return -1;
+        
+        return leverCnt + endCnt;
     }
-
-    public int bfs(int[] idx, int[] destination, String[] maps) {
-        // 변수 초기화
+    
+    public int bfs(String[] maps, int[] start, int[] end) {
         Queue<int[]> q = new LinkedList<>();
-        boolean[][] visited = new boolean[N][M];
-        distance = new int[N][M];
-        distance[idx[0]][idx[1]] = 0;
-
-        // 방문 처리
-        visited[idx[0]][idx[1]] = true;
-        q.offer(idx);
-
-        // 큐의 요소가 남지 않을 때까지 반복
+        boolean[][] visited = new boolean[y][x]; // y행 x열
+        
+        q.add(new int[] { start[0], start[1], 0 });
+        visited[start[0]][start[1]] = true;
+        
         while (!q.isEmpty()) {
             int[] poll = q.poll();
-            int x = poll[0];
-            int y = poll[1];
-
-            if (x == destination[0] && y == destination[1]) {
-                return distance[x][y];
+            int cx = poll[0];
+            int cy = poll[1];
+            int cnt = poll[2];
+            
+            if (cx == end[0] && cy == end[1]) {
+                return cnt;
             }
-
-            // 상하좌우 탐색
+            
             for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                // 미로의 범위에서 벗어나면 종료
-                if (nx < 0 || ny < 0 || nx > N - 1 || ny > M - 1) {
-                    continue;
-                }
-
-                // 벽이 아니고, 방문하지 않았으면 방문 처리
-                if (maps[nx].charAt(ny) != 'X' && !visited[nx][ny]) {
-                    // 방문 처리
+                int nx = cx + dx[i];
+                int ny = cy + dy[i];
+                
+                if (nx < 0 || ny < 0 || nx >= y || ny >= x) continue;
+                
+                if (!visited[nx][ny] && maps[nx].charAt(ny) != BLOCK) {
+                    q.add(new int[] { nx, ny, cnt + 1 });
                     visited[nx][ny] = true;
-                    q.offer(new int[]{nx, ny});
-                    distance[nx][ny] += distance[x][y] + 1;
                 }
             }
         }
+        
         return -1;
     }
 }
