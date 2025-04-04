@@ -1,34 +1,38 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
     public int[] solution(int[] answers) {
-        int[] arr1 = { 1, 2, 3, 4, 5 };
-        int[] arr2 = { 2, 1, 2, 3, 2, 4, 2, 5 };
-        int[] arr3 = { 3, 3, 1, 1, 2, 2, 4, 4, 5, 5 };
-
         int[] answer = new int[3];
-
+        
+        int[] oneAnswer = { 1, 2, 3, 4, 5 };
+        int[] twoAnswer = { 2, 1, 2, 3, 2, 4, 2, 5 };
+        int[] threeAnswer = { 3, 3, 1, 1, 2, 2, 4, 4, 5, 5 };
+        
         for (int i = 0; i < answers.length; i++) {
-            if (answers[i] == arr1[i % arr1.length]) {
+            int num = answers[i];
+            
+            if (num == oneAnswer[i % oneAnswer.length]) {
                 answer[0]++;
             }
-            if (answers[i] == arr2[i % arr2.length]) {
+            
+            if (num == twoAnswer[i % twoAnswer.length]) {
                 answer[1]++;
             }
-            if (answers[i] == arr3[i % arr3.length]) {
+            
+            if (num == threeAnswer[i % threeAnswer.length]) {
                 answer[2]++;
             }
         }
-
-        int max = Arrays.stream(answer).max().getAsInt();
-
-        ArrayList<Integer> result = new ArrayList<>();
         
-        for (int i = 0; i < answer.length; i++) {
-            if (max == answer[i]) result.add(i + 1);
+        int max = Math.max(Math.max(answer[0], answer[1]), answer[2]);
+        List<Integer> list = new ArrayList<>();
+        
+        for (int i = 0; i < 3; i++) {
+            if (answer[i] == max) {
+                list.add(i + 1);
+            }
         }
         
-        return result.stream().sorted().mapToInt(Integer::intValue).toArray();
+        return list.stream().mapToInt(i -> i).toArray();
     }
 }
