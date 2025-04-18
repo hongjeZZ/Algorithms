@@ -9,7 +9,6 @@ public class Solution {
                 n -= 1;
                 answer++;
             }
-            
             n /= 2;
         }
         
